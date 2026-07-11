@@ -7,7 +7,7 @@ variable "project_name" {
 variable "aws_region" {
   description = "AWS region to deploy into"
   type        = string
-  default     = "us-east-1" # cheapest + everything available; change if your class uses another
+  default     = "ap-southeast-1" # Asia hehe :p
 }
 
 variable "vpc_cidr" {
