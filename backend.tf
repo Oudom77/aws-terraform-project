@@ -18,11 +18,11 @@
 # Everyone who clones the repo after that is automatically on shared state.
 # ─────────────────────────────────────────────────────────────────────────────
 
-# terraform {
-#   backend "s3" {
-#     bucket       = "<TEAM>-project-cloud-tfstate"
-#     key          = "terraform.tfstate"
-#     region       = "us-east-1"
-#     use_lockfile = true # stops two people running apply at the same time
-#   }
-# }
+terraform {
+  backend "s3" {
+    bucket       = "cadt-team1-aws-cloud-tfstate"
+    key          = "terraform.tfstate"
+    region       = "ap-southeast-1"
+    use_lockfile = true # stops two people running apply at the same time
+  }
+}
