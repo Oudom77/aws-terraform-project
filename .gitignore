@@ -1,0 +1,21 @@
+# Terraform working files — NEVER commit these
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Variable files may contain secrets (DB passwords etc.)
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# Plan output files
+*.tfplan
+
+# Editor junk
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# DO commit .terraform.lock.hcl — it pins provider versions for the whole team

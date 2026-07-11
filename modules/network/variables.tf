@@ -1,0 +1,14 @@
+variable "project_name" {
+  description = "Prefix for resource names"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "IP range for the VPC"
+  type        = string
+}
+
+variable "enable_nat" {
+  description = "Whether to create the NAT gateway (~$1/day)"
+  type        = bool
+}
