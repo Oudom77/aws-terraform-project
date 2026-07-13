@@ -25,3 +25,8 @@ output "app_url" {
   description = "The app's public address — deliverable #1"
   value       = "http://${module.compute.alb_dns_name}"
 }
+
+output "asg_name" {
+  description = "Auto Scaling Group name (used in the failure demo and Person 4's alarms)"
+  value       = module.compute.asg_name
+}
