@@ -20,3 +20,8 @@ output "db_subnet_ids" {
   description = "Private subnets for RDS"
   value       = module.network.db_subnet_ids
 }
+
+output "app_url" {
+  description = "The app's public address — deliverable #1"
+  value       = "http://${module.compute.alb_dns_name}"
+}
