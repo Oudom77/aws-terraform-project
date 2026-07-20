@@ -30,3 +30,8 @@ output "asg_name" {
   description = "Auto Scaling Group name (used in the failure demo and Person 4's alarms)"
   value       = module.compute.asg_name
 }
+
+output "dashboard_url" {
+  description = "CloudWatch dashboard URL"
+  value       = module.monitoring.dashboard_url
+}
