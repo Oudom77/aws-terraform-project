@@ -27,3 +27,9 @@ module "network" {
 #   db_subnet_ids = module.network.db_subnet_ids
 #   db_sg_id      = module.network.db_sg_id
 # }
+
+# ── Person 4
+module "monitoring" {
+  source       = "./modules/monitoring"
+  project_name = var.project_name
+}
