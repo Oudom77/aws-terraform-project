@@ -35,9 +35,9 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [var.app_sg_id]
 
-  # Module's own least-privilege profile (deploy.tf); Person 4's can override
+  # Instance permissions are owned by this module and defined in iam.tf.
   iam_instance_profile {
-    name = var.iam_instance_profile_name != "" ? var.iam_instance_profile_name : aws_iam_instance_profile.app.name
+    name = aws_iam_instance_profile.app.name
   }
 
   # Require IMDSv2 — blocks SSRF-style credential theft from the metadata API

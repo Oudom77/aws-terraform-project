@@ -34,7 +34,7 @@ resource "aws_security_group" "alb" {
 }
 
 # App instances: ONLY the ALB can talk to them. No SSH from the internet —
-# use AWS SSM Session Manager if you need a shell (Person 4 sets up the role).
+# use AWS SSM Session Manager if you need a shell (configured by compute).
 resource "aws_security_group" "app" {
   name        = "${var.project_name}-app-sg"
   description = "App instances - accepts HTTP only from the ALB"
