@@ -1,5 +1,4 @@
 # Root outputs — printed after `terraform apply`, and usable by teammates.
-# Person 2 will add the ALB DNS name here later.
 
 output "vpc_id" {
   description = "The VPC everything lives in"
@@ -34,4 +33,9 @@ output "asg_name" {
 output "dashboard_url" {
   description = "CloudWatch dashboard URL"
   value       = module.monitoring.dashboard_url
+}
+
+output "app_bucket" {
+  description = "Bucket for app.zip — publish the app with app/deploy/publish.ps1"
+  value       = module.compute.app_bucket
 }

@@ -35,12 +35,9 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [var.app_sg_id]
 
-  # Person 4's SSM role plugs in here once it exists
-  dynamic "iam_instance_profile" {
-    for_each = var.iam_instance_profile_name == "" ? [] : [1]
-    content {
-      name = var.iam_instance_profile_name
-    }
+  # Module's own least-privilege profile (deploy.tf); Person 4's can override
+  iam_instance_profile {
+    name = var.iam_instance_profile_name != "" ? var.iam_instance_profile_name : aws_iam_instance_profile.app.name
   }
 
   # Require IMDSv2 — blocks SSRF-style credential theft from the metadata API
@@ -49,24 +46,13 @@ resource "aws_launch_template" "app" {
     http_endpoint = "enabled"
   }
 
-  # Install Apache and serve a page that names the instance and AZ, so the
-  # load-balancing and failure-recovery demos are visible in the browser.
-  user_data = base64encode(<<-EOF
-    #!/bin/bash
-    dnf install -y httpd
-    TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
-    INSTANCE_ID=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
-    AZ=$(curl -sH "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/availability-zone)
-    cat > /var/www/html/index.html <<HTML
-    <html><body style="font-family:sans-serif;text-align:center;padding-top:15%">
-      <h1>${var.project_name}</h1>
-      <p>Served by instance <b>$INSTANCE_ID</b> in <b>$AZ</b></p>
-      <p>Refresh to see the load balancer alternate between instances.</p>
-    </body></html>
-    HTML
-    systemctl enable --now httpd
-  EOF
-  )
+  # Boot script: install Node, pull CloudNotes from the bundle bucket, run it.
+  # Publish/update the bundle with app/deploy/publish.ps1.
+  user_data = base64encode(templatefile("${path.module}/../../app/deploy/user-data.sh", {
+    app_bucket   = aws_s3_bucket.app_bundle.bucket
+    database_url = var.database_url   # empty until Person 3's RDS
+    s3_bucket    = var.uploads_bucket # empty until Person 3's bucket
+  }))
 
   tag_specifications {
     resource_type = "instance"
@@ -86,7 +72,7 @@ resource "aws_autoscaling_group" "app" {
   # "ELB" = replace instances that fail HTTP health checks, not just ones
   # whose hardware dies. This is what makes the failure demo work.
   health_check_type         = "ELB"
-  health_check_grace_period = 120
+  health_check_grace_period = 300 # npm install on a t3.micro needs a moment
 
   target_group_arns = [aws_lb_target_group.app.arn]
 

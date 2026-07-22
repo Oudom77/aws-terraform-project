@@ -13,6 +13,16 @@ variable "target_group_arn" {
   type        = string
 }
 
+variable "load_balancer_arn_suffix" {
+  description = "Load balancer ARN suffix for ALB CloudWatch dimensions"
+  type        = string
+}
+
+variable "instance_role_name" {
+  description = "Existing EC2 app role to grant SSM Session Manager access"
+  type        = string
+}
+
 variable "cpu_alarm_threshold" {
   description = "CPU percentage threshold"
   type        = number

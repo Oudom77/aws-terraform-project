@@ -1,0 +1,6 @@
+# Shell scripts run on Linux EC2 instances — they MUST keep LF endings,
+# or bash chokes on the invisible \r when the repo is cloned on Windows.
+*.sh text eol=lf
+
+# Everything else: let git normalize per platform as usual
+* text=auto

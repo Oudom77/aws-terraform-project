@@ -74,7 +74,8 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_targets" {
   alarm_description   = "One or more targets behind the ALB are failing health checks"
 
   dimensions = {
-    TargetGroup = local.target_group_arn_suffix
+    LoadBalancer = var.load_balancer_arn_suffix
+    TargetGroup  = local.target_group_arn_suffix
   }
 
   alarm_actions = [aws_sns_topic.alerts.arn]
@@ -113,7 +114,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         type = "metric", x = 0, y = 6, width = 12, height = 6
         properties = {
           title   = "Unhealthy Targets (ALB)"
-          metrics = [["AWS/ApplicationELB", "UnHealthyHostCount", "TargetGroup", local.target_group_arn_suffix]]
+          metrics = [["AWS/ApplicationELB", "UnHealthyHostCount", "LoadBalancer", var.load_balancer_arn_suffix, "TargetGroup", local.target_group_arn_suffix]]
           period  = 60
           stat    = "Average"
           region  = data.aws_region.current.name

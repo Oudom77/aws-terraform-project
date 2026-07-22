@@ -19,9 +19,10 @@ resource "aws_lb_target_group" "app" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
-  # Fast health checks so the failure demo shows recovery within ~1 minute
+  # Fast health checks so the failure demo shows recovery within ~1 minute.
+  # /health also pings the database — "unhealthy" means app OR its DB is down.
   health_check {
-    path                = "/"
+    path                = "/health"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     interval            = 15

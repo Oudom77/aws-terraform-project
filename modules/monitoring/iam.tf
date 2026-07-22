@@ -1,28 +1,7 @@
-# IAM role for EC2 instances so they can be reached via AWS SSM Session
-# Manager instead of SSH (no SSH access exists per the network module's
-# security group design).
-
-resource "aws_iam_role" "ec2_ssm" {
-  name = "${var.project_name}-ec2-ssm-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRole"
-      Effect    = "Allow"
-      Principal = { Service = "ec2.amazonaws.com" }
-    }]
-  })
-
-  tags = { Name = "${var.project_name}-ec2-ssm-role" }
-}
+# Allow app instances to be reached via AWS SSM Session Manager instead of SSH.
+# This attaches to the existing app role so deployment S3 permissions stay intact.
 
 resource "aws_iam_role_policy_attachment" "ssm_core" {
-  role       = aws_iam_role.ec2_ssm.name
+  role       = var.instance_role_name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_instance_profile" "ec2_ssm" {
-  name = "${var.project_name}-ec2-ssm-profile"
-  role = aws_iam_role.ec2_ssm.name
 }
