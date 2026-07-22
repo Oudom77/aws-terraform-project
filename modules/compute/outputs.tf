@@ -10,6 +10,11 @@ output "target_group_arn" {
   value       = aws_lb_target_group.app.arn
 }
 
+output "load_balancer_arn_suffix" {
+  description = "CloudWatch LoadBalancer dimension for ALB metrics"
+  value       = aws_lb.app.arn_suffix
+}
+
 output "asg_name" {
   description = "For Person 4's CloudWatch alarms and the failure demo"
   value       = aws_autoscaling_group.app.name
@@ -23,9 +28,4 @@ output "launch_template_id" {
 output "app_bucket" {
   description = "S3 bucket holding the deployable app.zip (used by publish.ps1)"
   value       = aws_s3_bucket.app_bundle.bucket
-}
-
-output "instance_role_name" {
-  description = "IAM role on the app instances — Person 4 attaches SSM/CloudWatch policies here"
-  value       = aws_iam_role.app_instance.name
 }

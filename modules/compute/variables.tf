@@ -54,12 +54,6 @@ variable "asg_desired_capacity" {
   default     = 2
 }
 
-variable "iam_instance_profile_name" {
-  description = "Override instance profile (Person 4's SSM role later; empty = the module's own app profile)"
-  type        = string
-  default     = ""
-}
-
 variable "database_url" {
   description = "mysql://user:pass@endpoint:3306/db from Person 3's RDS. Empty = app uses its local fallback store."
   type        = string
