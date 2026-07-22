@@ -19,3 +19,13 @@ output "launch_template_id" {
   description = "Launch template driving the ASG"
   value       = aws_launch_template.app.id
 }
+
+output "app_bucket" {
+  description = "S3 bucket holding the deployable app.zip (used by publish.ps1)"
+  value       = aws_s3_bucket.app_bundle.bucket
+}
+
+output "instance_role_name" {
+  description = "IAM role on the app instances — Person 4 attaches SSM/CloudWatch policies here"
+  value       = aws_iam_role.app_instance.name
+}

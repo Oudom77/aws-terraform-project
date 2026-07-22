@@ -30,3 +30,8 @@ output "asg_name" {
   description = "Auto Scaling Group name (used in the failure demo and Person 4's alarms)"
   value       = module.compute.asg_name
 }
+
+output "app_bucket" {
+  description = "Bucket for app.zip — publish the app with app/deploy/publish.ps1"
+  value       = module.compute.app_bucket
+}

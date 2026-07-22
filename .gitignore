@@ -18,4 +18,11 @@ crash.log
 *.swp
 .DS_Store
 
+# App: local-testing artifacts (SQLite db, uploaded files, node modules)
+app/local.db
+app/notes.json
+app/uploads/
+app/node_modules/
+app.zip
+
 # DO commit .terraform.lock.hcl — it pins provider versions for the whole team

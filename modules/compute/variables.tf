@@ -55,7 +55,20 @@ variable "asg_desired_capacity" {
 }
 
 variable "iam_instance_profile_name" {
-  description = "Instance profile for SSM access etc. (Person 4 provides this later; empty = none)"
+  description = "Override instance profile (Person 4's SSM role later; empty = the module's own app profile)"
+  type        = string
+  default     = ""
+}
+
+variable "database_url" {
+  description = "mysql://user:pass@endpoint:3306/db from Person 3's RDS. Empty = app uses its local fallback store."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "uploads_bucket" {
+  description = "Person 3's S3 bucket for note images. Empty = app saves to the instance's disk."
   type        = string
   default     = ""
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CloudNotes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>☁️ CloudNotes</h1>
+    <p class="tagline">your notes, highly available</p>
+    <div class="badge" id="badge">connecting…</div>
+  </header>
+
+  <main>
+    <form id="composer" class="note-card color-yellow">
+      <input id="title" type="text" placeholder="Title" maxlength="120" autocomplete="off">
+      <textarea id="body" placeholder="Take a note…" rows="3" maxlength="2000"></textarea>
+      <div class="composer-bar">
+        <div class="swatches" id="swatches">
+          <button type="button" class="swatch color-yellow selected" data-color="yellow" title="yellow"></button>
+          <button type="button" class="swatch color-mint" data-color="mint" title="mint"></button>
+          <button type="button" class="swatch color-sky" data-color="sky" title="sky"></button>
+          <button type="button" class="swatch color-rose" data-color="rose" title="rose"></button>
+          <button type="button" class="swatch color-lilac" data-color="lilac" title="lilac"></button>
+        </div>
+        <label class="attach" title="Attach an image">
+          📎 <input id="image" type="file" accept="image/*" hidden>
+          <span id="attach-name"></span>
+        </label>
+        <button type="submit" class="add-btn">Add note</button>
+      </div>
+    </form>
+
+    <section id="board" class="board"></section>
+    <p id="empty" class="empty" hidden>No notes yet — write the first one ✍️</p>
+  </main>
+
+  <footer>
+    EC2 (compute) · RDS (data) · S3 (files) · behind an ALB — Project Cloud
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "cloudnotes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CloudNotes — full-stack note-taking app for Project Cloud. Express API + browser frontend; SQLite/local-folder on a laptop, RDS MySQL + S3 on AWS (switched by env vars).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0",
+    "express": "^4.19.2",
+    "multer": "^2.0.1",
+    "mysql2": "^3.11.0"
+  }
+}
