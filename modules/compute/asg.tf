@@ -49,9 +49,11 @@ resource "aws_launch_template" "app" {
   # Boot script: install Node, pull CloudNotes from the bundle bucket, run it.
   # Publish/update the bundle with app/deploy/publish.ps1.
   user_data = base64encode(templatefile("${path.module}/../../app/deploy/user-data.sh", {
-    app_bucket   = aws_s3_bucket.app_bundle.bucket
-    database_url = var.database_url   # empty until Person 3's RDS
-    s3_bucket    = var.uploads_bucket # empty until Person 3's bucket
+    app_bucket    = aws_s3_bucket.app_bundle.bucket
+    db_secret_arn = var.db_secret_arn  # empty = app uses its local fallback store
+    db_endpoint   = var.db_endpoint    # host:port of Person 3's RDS
+    db_name       = var.db_name        # database name on that RDS
+    s3_bucket     = var.uploads_bucket # empty until Person 3's bucket
   }))
 
   tag_specifications {

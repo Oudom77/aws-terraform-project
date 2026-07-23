@@ -54,11 +54,26 @@ variable "asg_desired_capacity" {
   default     = 2
 }
 
-variable "database_url" {
-  description = "mysql://user:pass@endpoint:3306/db from Person 3's RDS. Empty = app uses its local fallback store."
+# Database wiring — the app's connection string is assembled ON the instance at
+# boot from these, so the DB password never lands in Terraform state or the
+# rendered launch template. Username/password come from Secrets Manager; only
+# the (non-secret) host and db name are passed in here.
+variable "db_secret_arn" {
+  description = "ARN of Person 3's DB credentials secret. Empty = app uses its local fallback store."
   type        = string
   default     = ""
-  sensitive   = true
+}
+
+variable "db_endpoint" {
+  description = "RDS endpoint in host:port form (Person 3's db_endpoint output)."
+  type        = string
+  default     = ""
+}
+
+variable "db_name" {
+  description = "Database name on the RDS instance."
+  type        = string
+  default     = ""
 }
 
 variable "uploads_bucket" {
