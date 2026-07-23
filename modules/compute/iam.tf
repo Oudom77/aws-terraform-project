@@ -29,8 +29,6 @@ resource "aws_iam_role_policy" "read_app_bundle" {
 
 # Allow the app to manage uploaded image objects in its private bucket.
 resource "aws_iam_role_policy" "manage_uploads" {
-  count = var.uploads_bucket_arn != "" ? 1 : 0
-
   name = "manage-app-uploads"
   role = aws_iam_role.app_instance.id
 
