@@ -11,17 +11,18 @@ module "network" {
 
 # ── Person 2
 module "compute" {
-  source            = "./modules/compute"
-  project_name      = var.project_name
-  vpc_id            = module.network.vpc_id
-  public_subnet_ids = module.network.public_subnet_ids
-  app_subnet_ids    = module.network.app_subnet_ids
-  alb_sg_id         = module.network.alb_sg_id
-  app_sg_id         = module.network.app_sg_id
-  db_secret_arn     = module.data.db_secret_arn
-  db_endpoint       = module.data.db_endpoint
-  db_name           = module.data.db_name
-  uploads_bucket    = module.data.uploads_bucket
+  source             = "./modules/compute"
+  project_name       = var.project_name
+  vpc_id             = module.network.vpc_id
+  public_subnet_ids  = module.network.public_subnet_ids
+  app_subnet_ids     = module.network.app_subnet_ids
+  alb_sg_id          = module.network.alb_sg_id
+  app_sg_id          = module.network.app_sg_id
+  db_secret_arn      = module.data.db_secret_arn
+  db_endpoint        = module.data.db_endpoint
+  db_name            = module.data.db_name
+  uploads_bucket     = module.data.uploads_bucket
+  uploads_bucket_arn = module.data.uploads_bucket_arn
 }
 
 # ── Person 3
