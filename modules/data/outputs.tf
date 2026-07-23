@@ -31,3 +31,8 @@ output "database_url" {
   value       = "mysql://${aws_db_instance.mysql.endpoint}:3306/${aws_db_instance.mysql.db_name}"
   sensitive   = true
 }
+
+output "read_replica_endpoint" {
+  description = "RDS repica endpoint"
+  value       = aws_db_instance.mysql_replica.endpoint
+}
