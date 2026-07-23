@@ -9,6 +9,6 @@ variable "vpc_cidr" {
 }
 
 variable "enable_nat" {
-  description = "Whether to create the NAT gateway (~$1/day)"
+  description = "Whether to create the NAT gateway required by the current app bootstrap"
   type        = bool
 }

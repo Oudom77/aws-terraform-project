@@ -8,7 +8,7 @@
 #
 # The download RETRIES until the bundle exists, so `terraform apply` and
 # app/deploy/publish.ps1 can run in either order. Logs: /var/log/cloud-init-output.log
-set -x
+set -e
 
 dnf install -y nodejs npm unzip jq
 
@@ -22,10 +22,9 @@ unzip -o /tmp/app.zip -d /opt/app
 cd /opt/app
 npm install --omit=dev --no-audit --no-fund
 
-# Database credentials come from Secrets Manager, not from Terraform. The
-# username/password never touch Terraform state or this rendered file — the
-# instance (using its IAM role) fetches the secret at boot and assembles the
-# connection string locally. host:port and db name are non-secret and injected.
+# The rendered launch template contains only the secret ARN. The instance uses
+# its IAM role to fetch the credentials at boot and assembles the connection
+# string locally. Host, port, and database name are non-secret inputs.
 DATABASE_URL=""
 if [ -n "${db_secret_arn}" ]; then
   until SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "${db_secret_arn}" --query SecretString --output text); do
@@ -39,7 +38,8 @@ if [ -n "${db_secret_arn}" ]; then
   DATABASE_URL="mysql://$DB_USER:$DB_PASS@${db_endpoint}/${db_name}"
 fi
 
-# Runtime configuration — the same env vars the app reads on a laptop
+# Runtime configuration — readable only by root because it contains DB credentials.
+install -m 600 /dev/null /etc/app.env
 cat > /etc/app.env <<ENV
 DATABASE_URL=$DATABASE_URL
 S3_BUCKET=${s3_bucket}

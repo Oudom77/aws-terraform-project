@@ -31,7 +31,8 @@ resource "aws_db_instance" "mysql" {
 }
 
 resource "aws_s3_bucket" "uploads" {
-  bucket = "${var.project_name}-uploads"
+  bucket        = "${var.project_name}-uploads"
+  force_destroy = true # project teardown also removes uploaded demo images
   tags = {
     Name = "${var.project_name}-uploads"
   }

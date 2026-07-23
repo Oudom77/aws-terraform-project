@@ -14,6 +14,7 @@ Scalable, secure, highly available web application on AWS, deployed with Terrafo
 
 ```
 project-cloud/
+├── app/                # CloudNotes source and EC2 deployment scripts
 ├── main.tf            # Root — wires the modules together
 ├── providers.tf       # Terraform + AWS provider versions
 ├── variables.tf       # Project-wide settings (region, name, NAT toggle)
@@ -40,8 +41,9 @@ terraform destroy   # tears everything down — RUN THIS WHEN DONE WORKING
 ```
 
 **Money rule: `terraform destroy` at the end of every work session.**
-The NAT gateway alone costs ~$1/day if you forget. You can also set
-`enable_nat = false` in `terraform.tfvars` during development to run free.
+The NAT gateway alone costs roughly $1/day if you forget. Keep `enable_nat = true`:
+the current EC2 bootstrap needs outbound access for packages, S3, Secrets Manager,
+and SSM. Disabling it requires a different deployment strategy and VPC endpoints.
 
 ## Team workflow (GitHub usage is graded!)
 
@@ -56,4 +58,4 @@ The NAT gateway alone costs ~$1/day if you forget. You can also set
 - [x] VPC + subnets (2 AZs, public/private/db tiers)
 - [x] Internet gateway, NAT (toggleable), route tables
 - [x] Security groups (ALB / app / DB)
-- [ ] Remote state bootstrapped (see backend.tf)
+- [x] Remote state bootstrapped in S3 with versioning and state locking

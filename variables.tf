@@ -17,7 +17,7 @@ variable "vpc_cidr" {
 }
 
 variable "enable_nat" {
-  description = "NAT gateway lets private instances reach the internet (updates, packages). ~$1/day — set false during development to run free."
+  description = "NAT gateway required by the current EC2 bootstrap for packages and AWS API access."
   type        = bool
   default     = true
 }

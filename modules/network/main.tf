@@ -105,8 +105,8 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# App subnets: outbound traffic goes through the NAT (if enabled).
-# If NAT is disabled there's simply no internet route — still deploys fine.
+# App subnets: outbound traffic goes through the NAT. Disabling NAT requires a
+# different bootstrap strategy plus VPC endpoints for the AWS services used.
 resource "aws_route_table" "app" {
   vpc_id = aws_vpc.main.id
   tags   = { Name = "${var.project_name}-app-rt" }
