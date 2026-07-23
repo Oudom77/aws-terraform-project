@@ -81,3 +81,9 @@ variable "uploads_bucket" {
   type        = string
   default     = ""
 }
+
+variable "uploads_bucket_arn" {
+  description = "ARN of the uploads bucket for the app instance IAM policy."
+  type        = string
+  default     = ""
+}

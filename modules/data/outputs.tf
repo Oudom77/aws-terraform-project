@@ -13,6 +13,11 @@ output "uploads_bucket" {
   value       = aws_s3_bucket.uploads.bucket
 }
 
+output "uploads_bucket_arn" {
+  description = "ARN of the private uploads bucket for EC2 IAM permissions."
+  value       = aws_s3_bucket.uploads.arn
+}
+
 # Added by Person 2 for the compute module's Secrets Manager integration:
 # compute grants its instance role read access to this ARN and the instances
 # fetch the DB credentials at boot (see modules/compute/iam.tf + user-data.sh).

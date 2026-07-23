@@ -27,6 +27,27 @@ resource "aws_iam_role_policy" "read_app_bundle" {
   })
 }
 
+# Allow the app to manage uploaded image objects in its private bucket.
+resource "aws_iam_role_policy" "manage_uploads" {
+  count = var.uploads_bucket_arn != "" ? 1 : 0
+
+  name = "manage-app-uploads"
+  role = aws_iam_role.app_instance.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ]
+      Resource = "${var.uploads_bucket_arn}/*"
+    }]
+  })
+}
+
 # Read the DB credentials secret (Person 3's data module) at boot. Scoped to the
 # single secret ARN — least privilege.
 resource "aws_iam_role_policy" "read_db_secret" {
