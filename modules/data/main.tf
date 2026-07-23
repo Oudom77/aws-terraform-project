@@ -9,17 +9,17 @@ resource "aws_db_subnet_group" "main" {
 }
 
 resource "aws_db_instance" "mysql" {
-  identifier = "${var.project_name}-db"
-  engine         = "mysql"
-  engine_version = "8.0"
-  instance_class = "db.t3.micro"
-  allocated_storage = 20
-  storage_type      = "gp2"
-  db_name  = "appdb"
-  username = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).username
-  password = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).password
-  db_subnet_group_name   = aws_db_subnet_group.main.name
-  vpc_security_group_ids = [var.db_sg_id]
+  identifier              = "${var.project_name}-db"
+  engine                  = "mysql"
+  engine_version          = "8.0"
+  instance_class          = "db.t3.micro"
+  allocated_storage       = 20
+  storage_type            = "gp2"
+  db_name                 = "appdb"
+  username                = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).username
+  password                = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).password
+  db_subnet_group_name    = aws_db_subnet_group.main.name
+  vpc_security_group_ids  = [var.db_sg_id]
   publicly_accessible     = false
   multi_az                = false
   backup_retention_period = 1
@@ -27,20 +27,6 @@ resource "aws_db_instance" "mysql" {
   skip_final_snapshot     = true
   tags = {
     Name = "${var.project_name}-db"
-  }
-}
-
-# Read Replica
-resource "aws_db_instance" "mysql_replica" {
-  identifier              = "${var.project_name}-db-replica"
-  replicate_source_db     = aws_db_instance.mysql.arn
-  instance_class          = "db.t3.micro"
-  publicly_accessible     = false
-  db_subnet_group_name    = aws_db_subnet_group.main.name
-  vpc_security_group_ids  = [var.db_sg_id]
-  skip_final_snapshot     = true
-  tags = {
-    Name = "${var.project_name}-db-replica"
   }
 }
 
