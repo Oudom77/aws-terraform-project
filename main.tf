@@ -35,5 +35,5 @@ module "monitoring" {
   asg_name                 = module.compute.asg_name
   target_group_arn         = module.compute.target_group_arn
   load_balancer_arn_suffix = module.compute.load_balancer_arn_suffix
-  # alert_email     = "you@example.com"   # optional — uncomment to get emailed
+  alert_email     = "sopanha.ryy@gmail.com" 
 }
