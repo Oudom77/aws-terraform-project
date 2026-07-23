@@ -18,7 +18,12 @@ until aws s3 cp "s3://${app_bucket}/app.zip" /tmp/app.zip; do
 done
 
 mkdir -p /opt/app
-unzip -o /tmp/app.zip -d /opt/app
+unzip -o /tmp/app.zip -d /opt/app || {
+  unzip_status=$?
+  # Compress-Archive on Windows uses backslash separators. unzip extracts the
+  # bundle successfully but returns 1 for that warning.
+  [ "$unzip_status" -eq 1 ] || exit "$unzip_status"
+}
 cd /opt/app
 npm install --omit=dev --no-audit --no-fund
 
