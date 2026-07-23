@@ -18,7 +18,9 @@ module "compute" {
   app_subnet_ids    = module.network.app_subnet_ids
   alb_sg_id         = module.network.alb_sg_id
   app_sg_id         = module.network.app_sg_id
-  database_url      = module.data.database_url
+  db_secret_arn     = module.data.db_secret_arn
+  db_endpoint       = module.data.db_endpoint
+  db_name           = module.data.db_name
   uploads_bucket    = module.data.uploads_bucket
 }
 
@@ -37,5 +39,5 @@ module "monitoring" {
   asg_name                 = module.compute.asg_name
   target_group_arn         = module.compute.target_group_arn
   load_balancer_arn_suffix = module.compute.load_balancer_arn_suffix
-  alert_email     = "sopanha.ryy@gmail.com" 
+  alert_email              = "sopanha.ryy@gmail.com"
 }
