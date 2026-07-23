@@ -54,10 +54,9 @@ variable "asg_desired_capacity" {
   default     = 2
 }
 
-# Database wiring — the app's connection string is assembled ON the instance at
-# boot from these, so the DB password never lands in Terraform state or the
-# rendered launch template. Username/password come from Secrets Manager; only
-# the (non-secret) host and db name are passed in here.
+# Database wiring — the app's connection string is assembled on the instance.
+# The rendered launch template receives only the secret ARN plus the non-secret
+# host and database name; it never contains the credential value itself.
 variable "db_secret_arn" {
   description = "ARN of Person 3's DB credentials secret. Empty = app uses its local fallback store."
   type        = string

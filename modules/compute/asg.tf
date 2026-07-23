@@ -71,6 +71,9 @@ resource "aws_autoscaling_group" "app" {
   desired_capacity    = var.asg_desired_capacity
   vpc_zone_identifier = var.app_subnet_ids # private subnets, both AZs
 
+  enabled_metrics     = ["GroupInServiceInstances"]
+  metrics_granularity = "1Minute"
+
   # "ELB" = replace instances that fail HTTP health checks, not just ones
   # whose hardware dies. This is what makes the failure demo work.
   health_check_type         = "ELB"

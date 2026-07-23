@@ -237,12 +237,15 @@ async function main() {
     res.json({ ok: true });
   });
 
-  app.get("/health", async (req, res) => {
-    // ALB health check target — also verifies the DB connection works
+  // Liveness stays independent from shared dependencies so a DB outage does
+  // not make the ASG replace otherwise healthy application instances.
+  app.get("/health", (req, res) => res.send("ok"));
+
+  app.get("/ready", async (req, res) => {
     try {
       await db.ping();
       res.send("ok");
-    } catch (e) {
+    } catch {
       res.status(500).send("db unreachable");
     }
   });

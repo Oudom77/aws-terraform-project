@@ -1,6 +1,7 @@
 # Project Cloud — AWS Web App with Terraform
 
-Scalable, secure, highly available web application on AWS, deployed with Terraform.
+Scalable web application on AWS with a highly available app tier, private data
+layer, monitoring, and Terraform-managed infrastructure.
 
 ## Architecture (short version)
 
@@ -14,6 +15,7 @@ Scalable, secure, highly available web application on AWS, deployed with Terrafo
 
 ```
 project-cloud/
+├── app/                # CloudNotes source and EC2 deployment scripts
 ├── main.tf            # Root — wires the modules together
 ├── providers.tf       # Terraform + AWS provider versions
 ├── variables.tf       # Project-wide settings (region, name, NAT toggle)
@@ -40,20 +42,25 @@ terraform destroy   # tears everything down — RUN THIS WHEN DONE WORKING
 ```
 
 **Money rule: `terraform destroy` at the end of every work session.**
-The NAT gateway alone costs ~$1/day if you forget. You can also set
-`enable_nat = false` in `terraform.tfvars` during development to run free.
+The NAT gateway alone costs roughly $1/day if you forget. Keep `enable_nat = true`:
+the current EC2 bootstrap needs outbound access for packages, S3, Secrets Manager,
+and SSM. Disabling it requires a different deployment strategy and VPC endpoints.
 
 ## Team workflow (GitHub usage is graded!)
 
-1. Never commit directly to `main`
+1. Never commit directly to `master`
 2. `git checkout -b feature/your-thing` -> work -> commit -> push
 3. Open a Pull Request; Person 5 reviews and merges
 4. Everyone's commits must be their own — graders check this
 
-## Person 1 status
+## Infrastructure status
 
 - [x] Repo structure
 - [x] VPC + subnets (2 AZs, public/private/db tiers)
 - [x] Internet gateway, NAT (toggleable), route tables
 - [x] Security groups (ALB / app / DB)
-- [ ] Remote state bootstrapped (see backend.tf)
+- [x] Remote state bootstrapped in S3 with versioning and state locking
+- [x] ALB + Auto Scaling Group across 2 availability zones
+- [x] Private RDS MySQL + private S3 uploads bucket
+- [x] CloudWatch dashboard, alarms, and SNS notifications
+- [x] One-day automated RDS backup retention configured
