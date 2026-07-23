@@ -18,15 +18,17 @@ module "compute" {
   app_subnet_ids    = module.network.app_subnet_ids
   alb_sg_id         = module.network.alb_sg_id
   app_sg_id         = module.network.app_sg_id
+  database_url      = module.data.database_url
+  uploads_bucket    = module.data.uploads_bucket
 }
 
-# ── Person 3 adds (example): ─────────────────────────────────────────────────
-# module "data" {
-#   source        = "./modules/data"
-#   project_name  = var.project_name
-#   db_subnet_ids = module.network.db_subnet_ids
-#   db_sg_id      = module.network.db_sg_id
-# }
+# ── Person 3
+module "data" {
+  source        = "./modules/data"
+  project_name  = var.project_name
+  db_subnet_ids = module.network.db_subnet_ids
+  db_sg_id      = module.network.db_sg_id
+}
 
 # ── Person 4
 module "monitoring" {
