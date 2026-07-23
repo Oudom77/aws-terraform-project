@@ -15,6 +15,7 @@ resource "aws_db_instance" "mysql" {
   instance_class          = "db.t3.micro"
   allocated_storage       = 20
   storage_type            = "gp2"
+  storage_encrypted       = true
   db_name                 = "appdb"
   username                = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).username
   password                = jsondecode(aws_secretsmanager_secret_version.db_credentials.secret_string).password
